@@ -33,7 +33,8 @@ volatile byte btn [3] = {0,0,0};
 // Auxiliar variables
 volatile byte lastIn [3] = {0,0,0};
 volatile long current_time = 0;
-volatile byte counter_T2 = 0x1;
+volatile byte counter_T1 = 0;
+volatile byte counter_T2 = 1;
 volatile bool consumed = true;
 
 // Output variables
@@ -104,14 +105,16 @@ ISR(TIMER1_COMPA_vect)
 {
   potenciometer = analogRead(an1);                    // Read pin an1 to variable potenciometer
 
-  if (current_time >> 5 & 0x1 == 0x1)                 
+  counter_T1 ++;                                      // Increase timer 1 counter every 100 ms 
+  
+  if (counter_T1 == 10)                               // Execute every second
   {  
     sensors.requestTemperatures();                    // Read pin an0 to variable temp_sensor
+    counter_T1 = 0;                                   // Reset timer 1 counter
+    current_time ++;                                  // Increase time every second
   }
-  
-  current_time ++;                                    // Increase time in 1 unit each 10 ms
-  
-  if(current_time == 864000)                          // Check if the couter reach 24 hours
+    
+  if(current_time == 86400)                           // Check if the couter reach 24 hours
   {
     current_time = 0;                                 // Reset current time
   }
@@ -120,7 +123,7 @@ ISR(TIMER1_COMPA_vect)
 
 ISR(TIMER2_COMPA_vect)
 {
-  if(counter_T2 == 0x8)                                // Colect buttons data every 16 ms (4 * 2^(4 - 1))
+  if(counter_T2 == 8)                                 // Colect buttons data every 16 ms (4 * 3)
   {
     if(consumed)                                      // Block new inputs if the last inputs weren't consumed
     {
@@ -163,6 +166,7 @@ void loop()
 
     consumed= true;
     }   
+    
         Serial.print("\n");
 
   Serial.print(sensors.getTempCByIndex(0));
