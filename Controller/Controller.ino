@@ -14,6 +14,11 @@
 
 #define heater 6
 
+// // Include local libraries
+// #if defined(__AVR_ATmega328P__) || defined(__AVR_ATmega168__) 
+// #include "pins/pins_arduino_uno.h"
+// #endif
+
 #include <OneWire.h>
 #include <DallasTemperature.h>
 
