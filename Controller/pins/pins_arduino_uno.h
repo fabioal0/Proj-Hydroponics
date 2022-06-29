@@ -48,9 +48,3 @@
 //#define LATCH_DISPLAY_PIN                     
 //#define DATA_DISPLAY_PIN                      
 //#define CLK_DISPLAY_PIN                       
-
-//
-// Wifi
-//
-//#define TX_PIN                                
-//#define RX_PIN                                
