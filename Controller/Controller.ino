@@ -257,15 +257,21 @@
     
           if(light_en)                                                            // Verify if light enable is on
           {
-            if (light_status == 0x01 && current_time > 720000)                    // Check if the time passes 8 pm and the status is on
+            if (current_time >= 288000 && current_time <= 720000)                 // Check if the time is between 8 am and 8 pm
             {
-              light_status = 0x00;                                                // Change light status
-              change = 0x02;                                                      // Record current change
+              if (light_status == 0x00)                                           // Check if the status is off
+              {
+                light_status = 0x01;                                              // Change light status
+                change = 0x02;                                                    // Record current change
+              }
             }
-            else if (light_status == 0x00 && current_time > 288000)               // Check if the time passes 8 am and the status is off
+            else                                                                  // Any other time
             {
-              light_status = 0x01;                                                // Change light status
-              change = 0x02;                                                      // Record current change
+              if (light_status == 0x01)                                           // Check if the status is on
+              {
+                light_status = 0x00;                                              // Change light status
+                change = 0x02;                                                    // Record current change
+              }
             }
           }
           else if (light_status == 0x01)                                          // Check if the status is on and the enable is off
