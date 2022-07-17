@@ -23,7 +23,7 @@
   // Auxiliar
     volatile byte lastIn [3] = {0,0,0};
     volatile byte counter_T2 = 1;
-    long last_time = 0;
+    volatile long last_time = 0;
 
   // Clocks
     volatile long current_time = 0;
@@ -110,9 +110,10 @@
     
       current_time ++;                                                            // Increase time every 100 ms
         
-      if(current_time == 864000)                                                  // Check if the couter reach 24 hours
+      if(current_time >= 864000)                                                  // Check if the couter reach 24 hours
       {
         current_time = 0;                                                         // Reset current time
+        last_time = 0;                                                            // Reset last time
       }
     }
 
